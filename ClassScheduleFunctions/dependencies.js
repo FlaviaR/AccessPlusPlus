@@ -428,7 +428,7 @@ function dateInitializer(dtdate){
     var dt_date = new Date(dtdate);//We have to "typecast"
 	
 	var n_date = dt_date.getDate(),
-	var n_month = dt_date.getMonth() + 1;
+	n_month = dt_date.getMonth() + 1;
 	var s_date1 = n_month + '/' + n_date;
 
 
