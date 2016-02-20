@@ -13,9 +13,6 @@ var accessPlus1 = "https://accessplus.iastate.edu/servlet/adp.A_Plus?A_Plus_acti
 //var test = "file:///home/flavia/Download/Class%20Schedule.html";
 
 var img = document.createElement("img");
-img.src = "https://i.imgur.com/dSvcdl.gif"; //I regret nothing
-
-var clicked = false;
 
 var element = $('#long'); //where we're going to append our RMP div to
 var Name; //keeps track of the name of the current prof being read
@@ -26,6 +23,7 @@ var profs = []; //will store the prof's names here
 
 var numRMPEntries = 0; //counter for the number of RMP entries -- mostly used for CSS
 var displayRMP = false; 
+var displayGPA = false; 
 
  //Classes can have multiple meeting times at different places, if this happens then the
 								 //arrays containing the class information will have varying length. As such we should keep track
@@ -908,10 +906,6 @@ Array.prototype.clean = function(deleteValue) {
 
 //-------------------------------<Display>--------------------------------------
 
-function appendRMPInfo(){
-    
-}
-
 //The UI part of the application
 $(document).ready(function() {
  var updProfs = []; //updated array with the professor information, will not contain any repeated names
@@ -924,7 +918,8 @@ $(document).ready(function() {
   var superDiv = $('<div><div>'); //Div that will contain all of the elements of the RMP div. We need a master div to make ordering the elements easier
   var buttonDiv = $('<div style = "height: 55px;"></div>'); //Div that will contain our button elements
   var exportCalButDiv = $('<div style = "height: 15px;"></div>'); //Div that will contain our calendar export button
-  var rmpButDiv = $('<div style = "height: 15px;"></div>'); //Div that will contain our calendar export button
+  var rmpButDiv = $('<div style = "float: left; height: 15px;"></div>'); //Div that will contain our rmp button
+  var gpaButDiv = $('<div style = "float: left; height: 15px;"></div>'); //Div that will contain our gpa button
   var div = $('<div id = "rmpBox" style = "padding-top: 20px; display: none;"></div>'); //RMP div
   var imgDiv = $('<div id = "rmpImage" style = "display: none; margin-left: 170px; ; z-index: 1;  padding-top: 15px;position: absolute;"> <img src="https://www.userlogos.org/files/logos/Karmody/Rate_My_Prof_01.png" alt="RMP" style="width:130px;height:120px"> </div>'); //The RMP image title
 
@@ -934,7 +929,7 @@ $(document).ready(function() {
 
   var title = $('<div style = "width:320px; height: 23px; border-style: outset;border-color:#A30000; -webkit-border-radius: 5px 5px 5px 5px;background-image: -webkit-linear-gradient(bottom, #FF1111 0%, #9E0101 100%); color: white; font-size: 15px;"> <div style = "padding-left: 5px;  color: white;"></div> </div>'); //The red gradient div for the RMP
 
-  superDiv.append("<br><br><br><br>");
+  superDiv.append("<br><br>");
 
   //Lets structure our RMP UI
 
@@ -965,10 +960,14 @@ $(document).ready(function() {
 
   element.prepend(superDiv);
 
+  var gpaTable = $('<br> <table id = "GPATable" style = "display: none; table, td {border: 1px solid black;}"><br><br><br><br><tr><td>Row1 cell1</td><td>Row1 cell2</td></tr></table>');
+    superDiv.prepend(gpaTable);
+       
+     
  //Creation of our exportButton div
  //Using divs instead of a straight up button element since I wanted to customize its appearance
  var calIcon = "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-128.png";
- var expBut = $('<br><div style = "float: left;" ><div title="Generate an .ics Calendar object" style = "position: relative; padding: 15px; padding-bottom: 10px;margin-left: 50px"><button id="exportBut" style = "border-radius: 5px; box-shadow: 1px 1px 1px #888888; padding: 5px;color: #FFF;background-color: #900;"><img src="'+calIcon+'" style="float:left; width:45px;height:45px; margin-right: 5px; "> <img src = "https://cdn0.iconfinder.com/data/icons/large-black-icons/100/Right_arrow_next_play_forward.png" style="width:45px;height:45px; -webkit-filter: invert(100%); filter: invert(100%);"></button></div> <div id = "expCalTitle" style = "display: none; margin-left: 60px;"><span><b>Export My Schedule</b></span></div></div>');
+ var expBut = $('<br><div style = "float: left;" ><div title="Generate an .ics Calendar object" style = "position: relative; padding: 15px; padding-bottom: 10px;margin-left: 10px"><button id="exportBut" style = "border-radius: 5px; box-shadow: 1px 1px 1px #888888; padding: 5px;color: #FFF;background-color: #900;"><img src="'+calIcon+'" style="float:left; width:45px;height:45px; margin-right: 5px; "> <img src = "https://cdn0.iconfinder.com/data/icons/large-black-icons/100/Right_arrow_next_play_forward.png" style="width:45px;height:45px; -webkit-filter: invert(100%); filter: invert(100%);"></button></div> <div id = "expCalTitle" style = "display: none; margin-left: 15px;"><span><b>Export My Schedule</b></span></div></div>');
   exportCalButDiv.append(expBut);
   buttonDiv.append(exportCalButDiv);
   element.prepend(buttonDiv);
@@ -991,20 +990,20 @@ $(document).ready(function() {
   
    //Creation of our RMP select div
  //Using divs instead of a straight up button element since I wanted to customize its appearance
- var rmpIcon = "http://i.imgur.com/qJs8hSj.png?1";
- var rmpBut = $('<br><div><div title="Display RMP information" style = "position: relative; padding-top: 2px;margin-left: 215px"><button id="RMPBut" style = "border-radius: 5px; box-shadow: 1px 1px 1px #888888; padding: 5px;color: #FFF;background-color: #900;"><img src="'+rmpIcon+'" style="float:left; width:80px;height:45px; margin-right: 5px; "></button></div> <div id = "rmpTitle" style = "display: none; padding-top: 10px; margin-left: 215px;"><span><b>Display RMP info</b></span></div></div>');
+ var rmpIcon = "https://i.imgur.com/qJs8hSj.png?1";
+ var rmpBut = $('<br><div><div title="Display RMP information" style = "position: relative; padding-top: 2px;margin-left: 35px"><button id="RMPBut" style = "border-radius: 5px; box-shadow: 1px 1px 1px #888888; padding: 5px;color: #FFF;background-color: #900;"><img src="'+rmpIcon+'" style="float:left; width:95px;height:45px; margin-right: 5px; "></button></div> <div id = "rmpTitle" style = "display: none; padding-top: 10px; margin-left: 40px;"><span><b>Display RMP info</b></span></div></div>');
   rmpButDiv.append(rmpBut);
   buttonDiv.append(rmpButDiv);
      
   document.getElementById("RMPBut").addEventListener("click", function(){
       displayRMP = !displayRMP;
+      document.getElementById("GPATable").style.display = 'none';
+
+      document.getElementById("rmpBox").style.display = 'block';
+      document.getElementById("rmpImage").style.display = 'block';                                                   document.getElementById("rmpHat").style.display = 'block';
+      document.getElementById("rmpNote").style.display = 'block';
       
-      if (displayRMP){
-        document.getElementById("rmpBox").style.display = 'block';
-        document.getElementById("rmpImage").style.display = 'block';                                                   document.getElementById("rmpHat").style.display = 'block';
-        document.getElementById("rmpNote").style.display = 'block';
-      }
-      else{
+      if (!displayRMP){
         document.getElementById("rmpBox").style.display = 'none';
         document.getElementById("rmpImage").style.display = 'none';                                                   document.getElementById("rmpHat").style.display = 'none';
         document.getElementById("rmpNote").style.display = 'none';  
@@ -1022,13 +1021,45 @@ $(document).ready(function() {
     document.getElementById("rmpTitle").style.display = 'none';
   }
   
+ //Creation of our GPA select div
+ //Using divs instead of a straight up button element since I wanted to customize its appearance
+ var gpaIcon = "https://i.imgur.com/eCHaQZz.png";
+ var gpaBut = $('<br><div><div title="GPA calculator" style = "position: relative; padding-top: 2px;margin-left: 45px"><button id="GPABut" style = "border-radius: 5px; box-shadow: 1px 1px 1px #888888; padding: 5px;color: #FFF;background-color: #900;"><img src="'+gpaIcon+'" style="float:left; width:80px;height:45px; margin-right: 5px; "></button></div> <div id = "gpaTitle" style = "display: none; padding-top: 10px; margin-left: 35px;"><span><b>Term GPA calculator</b></span></div></div>');
+  gpaButDiv.append(gpaBut);
+  buttonDiv.append(gpaButDiv);
+     
+  document.getElementById("GPABut").addEventListener("click", function(){
+      displayGPA = !displayGPA;
+      document.getElementById("rmpBox").style.display = 'none';
+      document.getElementById("rmpImage").style.display = 'none';                                                   document.getElementById("rmpHat").style.display = 'none';
+      document.getElementById("rmpNote").style.display = 'none';
+      
+      if (displayGPA){          
+        document.getElementById("GPATable").style.display = 'block';
+      }
+      
+      else{
+        document.getElementById("GPATable").style.display = 'none';
+      }
+  });
+  document.getElementById("GPABut" ).onmouseover = function(){ //On hover functionality -- hovering over the button will update its background and the mouse cursor
+    this.style.backgroundColor = "#CC0000";
+    this.style.cursor = "pointer";
+    document.getElementById("gpaTitle").style.display = 'block';
+  }
+
+  //On hover functionality -- moving the mouse away, revert button to original color
+  document.getElementById("GPABut" ).onmouseout = function(){
+    this.style.backgroundColor = "#900";
+    document.getElementById("gpaTitle").style.display = 'none';
+  }
+  
   //Updates the rest of our list -- this part is related to the Calendar Export function
   getStartEndTime(meetingsT, meetingeT);
   getMeetingDates(startEndDate);
   getLocations(locations);
 
-  //REMOVE?
-//  locations.clean(undefined);//Remove empty values.
+  locations.clean(undefined);//Remove empty values.
   createClassInfo(classNames, meetingD, meetingsT, meetingeT, startEndDate, locations);
   cleanClassInfo();
   cleanNameSpacing();
