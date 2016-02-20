@@ -422,13 +422,13 @@ var ics = function() {
     };
 };
 
-//Check if the current date falls on thanksgiving
-function is_Thanksgiving(dtdate){
-	// check simple dates (month/date - no leading zeroes)
+// Returns the current date in the following format Month/Ocurrence/Day
+function dateInitializer(dtdate){
+    // check simple dates (month/date - no leading zeroes)
     var dt_date = new Date(dtdate);//We have to "typecast"
 	
 	var n_date = dt_date.getDate(),
-	n_month = dt_date.getMonth() + 1;
+	var n_month = dt_date.getMonth() + 1;
 	var s_date1 = n_month + '/' + n_date;
 
 
@@ -438,9 +438,15 @@ function is_Thanksgiving(dtdate){
 		n_wnum = Math.floor((n_date - 1) / 7) + 1;
 
 	var s_date2 = n_month + '/' + n_wnum + '/' + n_wday;
+    
+    return s_date2;
+}
 
-	
-	if ( s_date2 == '11/4/4' )// Thanksgiving Day, fourth Thursday in November
+//Check if the current date falls on thanksgiving
+function is_Thanksgiving(dtdate){
+
+	var dateBase = dateInitializer(dtdate);
+	if ( dateBase == '11/4/4' )// Thanksgiving Day, fourth Thursday in November
 	{
 		return true;
 	}
@@ -448,15 +454,13 @@ function is_Thanksgiving(dtdate){
 }
 
 //Check if the current date falls on spring break 
-function is_SpringBreak(){
-        var date = new Date();
-        
-        var springBreak = new Date ("March 7, " + date.getFullYear()); //Begins on the second saturday of March
-        while (springBreak.getDay() != 6){
-            springBreak.setDate(springBreak.getDate() + 1);
-        }
-
-        if (date.getMonth() == springBreak.getMonth() && (date.getDate() >= springBreak.getDate()  && date.getDate() <= springBreak.setDate(springBreak.getDate() + 7))) return true;
+function is_SpringBreak(dtdate){
+    var dateBase = dateInitializer(dtdate);
+	if ( dateBase == '3/2/6' )//Spring break, second saturday
+	{
+		return true;
+	}
+	return false;
 }
 
 //Returns true on a University holiday (4th of July, Reverend Doctor Martin Luther King, Jr. Day, Thanksgiving Week, Memorial Day, Labour day.)
